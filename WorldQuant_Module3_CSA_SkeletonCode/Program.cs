@@ -9,7 +9,7 @@ namespace WorldQuant_Module3_CSA_SkeletonCode
         static Excel.Workbook workbook;
         static Excel.Application app;
         
-        static Excel._Worksheet oSheet;
+        static Excel.Worksheet oSheet;
         static Excel.Range oRng;
 
         static Excel.Series oSeries;
@@ -73,7 +73,7 @@ namespace WorldQuant_Module3_CSA_SkeletonCode
                         default:
                             break;
                     }
-                } catch { }
+                } catch (Exception e){ Console.WriteLine("Error: " + e.Message); }
             }
 
             // save before exiting
@@ -126,30 +126,152 @@ namespace WorldQuant_Module3_CSA_SkeletonCode
         static void AddPropertyToWorksheet(float size, string suburb, string city, float value)
         {
             // TODO: Implement this method
+            int row = 2;
+            oSheet = (Excel.Worksheet)workbook.ActiveSheet;
+
+
+            while (true)
+            {
+                // look for first empty 
+                if (oSheet.Cells[row, "A"].Value == null)
+                {
+                    oSheet.Cells[row, "A"].Value = size;
+                    oSheet.Cells[row, "B"].Value = suburb;
+                    oSheet.Cells[row, "C"].Value = city;
+                    oSheet.Cells[row, "D"].Value = value;
+                    return;
+                }
+                row++;
+            }
+
         }
 
         static float CalculateMean()
         {
             // TODO: Implement this method
-            return 0.0f;
+            int row = 2;
+            string currentFormula = string.Empty;
+            float result=0.0f;
+            oSheet = (Excel.Worksheet)workbook.ActiveSheet;
+
+            while (true)
+            {
+                // look for first empty 
+                if (oSheet.Cells[row, "A"].Value == null)
+                    break;
+                else
+                    row++;
+                
+            }
+
+            if (row > 2)
+            {
+                row--;
+                currentFormula= "=AVERAGE(D2:D" + row+")";
+                oSheet.Cells[row + 1, "W"].Value = currentFormula;
+                oSheet.Calculate();
+                
+                result= Convert.ToSingle(oSheet.Cells[row + 1, "W"].Value);
+                oSheet.Cells[row + 1, "W"].Value = "";
+            }
+            
+            return result;
         }
 
         static float CalculateVariance()
         {
             // TODO: Implement this method
-            return 0.0f;
+            int row = 2;
+            string currentFormula = string.Empty;
+            float result = 0.0f;
+            oSheet = (Excel.Worksheet)workbook.ActiveSheet;
+
+            while (true)
+            {
+                // look for first empty 
+                if (oSheet.Cells[row, "A"].Value == null)
+                    break;
+                else
+                    row++;
+
+            }
+
+            if (row > 2)
+            {
+                row--;
+                currentFormula = "=VAR(D2:D" + row + ")";
+                oSheet.Cells[row + 1, "W"].Value = currentFormula;
+                oSheet.Calculate();
+
+                result = Convert.ToSingle(oSheet.Cells[row + 1, "W"].Value);
+                oSheet.Cells[row + 1, "W"].Value = "";
+            }
+
+            return result;
         }
 
         static float CalculateMinimum()
         {
             // TODO: Implement this method
-            return 0.0f;
+            int row = 2;
+            string currentFormula = string.Empty;
+            float result = 0.0f;
+            oSheet = (Excel.Worksheet)workbook.ActiveSheet;
+
+            while (true)
+            {
+                // look for first empty 
+                if (oSheet.Cells[row, "A"].Value == null)
+                    break;
+                else
+                    row++;
+
+            }
+
+            if (row > 2)
+            {
+                row--;
+                currentFormula = "=MIN(D2:D" + row + ")";
+                oSheet.Cells[row + 1, "W"].Value = currentFormula;
+                oSheet.Calculate();
+
+                result = Convert.ToSingle(oSheet.Cells[row + 1, "W"].Value);
+                oSheet.Cells[row + 1, "W"].Value = "";
+            }
+
+            return result;
         }
 
         static float CalculateMaximum()
         {
             // TODO: Implement this method
-            return 0.0f;
+            int row = 2;
+            string currentFormula = string.Empty;
+            float result = 0.0f;
+            oSheet = (Excel.Worksheet)workbook.ActiveSheet;
+
+            while (true)
+            {
+                // look for first empty 
+                if (oSheet.Cells[row, "A"].Value == null)
+                    break;
+                else
+                    row++;
+
+            }
+
+            if (row > 2)
+            {
+                row--;
+                currentFormula = "=MAX(D2:D" + row + ")";
+                oSheet.Cells[row + 1, "W"].Value = currentFormula;
+                oSheet.Calculate();
+
+                result = Convert.ToSingle(oSheet.Cells[row + 1, "W"].Value);
+                oSheet.Cells[row + 1, "W"].Value = "";
+            }
+
+            return result;
         }
     }
 }
