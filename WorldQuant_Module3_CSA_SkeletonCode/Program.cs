@@ -1,5 +1,6 @@
 ﻿using System;
 using Excel = Microsoft.Office.Interop.Excel;
+using System.Reflection;
 
 namespace WorldQuant_Module3_CSA_SkeletonCode
 {
@@ -7,6 +8,13 @@ namespace WorldQuant_Module3_CSA_SkeletonCode
     {
         static Excel.Workbook workbook;
         static Excel.Application app;
+        
+        static Excel._Worksheet oSheet;
+        static Excel.Range oRng;
+
+        static Excel.Series oSeries;
+        static Excel.Range oResizeRange;
+        static Excel._Chart oChart;
 
         static void Main(string[] args)
         {
@@ -90,6 +98,29 @@ namespace WorldQuant_Module3_CSA_SkeletonCode
         static void SetUp()
         {
             // TODO: Implement this method
+            try
+            {
+                //Start Excel and get Application object.
+                app = new Excel.Application();
+                app.Visible = true;
+
+                //Get a new workbook.
+                workbook = (Excel.Workbook)(app.Workbooks.Add(Missing.Value));
+                oSheet = (Excel.Worksheet)workbook.ActiveSheet;
+
+                //Add table headers going cell by cell.
+                oSheet.Cells[1, 1] = "Size (in square feet)";
+                oSheet.Cells[1, 2] = "Suburb";
+                oSheet.Cells[1, 3] = "City";
+                oSheet.Cells[1, 4] = "Market value";
+
+                //Format A1:D1 as bold, vertical alignment = center.
+                oSheet.get_Range("A1", "D1").Font.Bold = true;
+                oSheet.get_Range("A1", "D1").VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
+
+                workbook.SaveAs(@"property_pricing.xlsx");
+            }
+            catch (Exception e) { Console.WriteLine("Error: " + e.Message); }
         }
 
         static void AddPropertyToWorksheet(float size, string suburb, string city, float value)
