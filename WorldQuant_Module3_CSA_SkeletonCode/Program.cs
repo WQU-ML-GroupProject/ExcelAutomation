@@ -146,12 +146,11 @@ namespace WorldQuant_Module3_CSA_SkeletonCode
 
         }
 
-        static float CalculateMean()
+        static float ExecuteExcelFormula(string FormulaName)
         {
-            // TODO: Implement this method
             int row = 2;
             string currentFormula = string.Empty;
-            float result=0.0f;
+            float result = 0.0f;
             oSheet = (Excel.Worksheet)workbook.ActiveSheet;
 
             while (true)
@@ -161,117 +160,45 @@ namespace WorldQuant_Module3_CSA_SkeletonCode
                     break;
                 else
                     row++;
-                
+
             }
 
             if (row > 2)
             {
                 row--;
-                currentFormula= "=AVERAGE(D2:D" + row+")";
+                currentFormula = "="+ FormulaName + "(D2:D" + row + ")";
                 oSheet.Cells[row + 1, "W"].Value = currentFormula;
                 oSheet.Calculate();
-                
-                result= Convert.ToSingle(oSheet.Cells[row + 1, "W"].Value);
+
+                result = Convert.ToSingle(oSheet.Cells[row + 1, "W"].Value);
                 oSheet.Cells[row + 1, "W"].Value = "";
             }
-            
+
             return result;
+        }
+
+        static float CalculateMean()
+        {
+            // TODO: Implement this method
+            return ExecuteExcelFormula("AVERAGE");
         }
 
         static float CalculateVariance()
         {
             // TODO: Implement this method
-            int row = 2;
-            string currentFormula = string.Empty;
-            float result = 0.0f;
-            oSheet = (Excel.Worksheet)workbook.ActiveSheet;
+            return ExecuteExcelFormula("VAR");
 
-            while (true)
-            {
-                // look for first empty 
-                if (oSheet.Cells[row, "A"].Value == null)
-                    break;
-                else
-                    row++;
-
-            }
-
-            if (row > 2)
-            {
-                row--;
-                currentFormula = "=VAR(D2:D" + row + ")";
-                oSheet.Cells[row + 1, "W"].Value = currentFormula;
-                oSheet.Calculate();
-
-                result = Convert.ToSingle(oSheet.Cells[row + 1, "W"].Value);
-                oSheet.Cells[row + 1, "W"].Value = "";
-            }
-
-            return result;
         }
 
         static float CalculateMinimum()
         {
-            // TODO: Implement this method
-            int row = 2;
-            string currentFormula = string.Empty;
-            float result = 0.0f;
-            oSheet = (Excel.Worksheet)workbook.ActiveSheet;
+            return ExecuteExcelFormula("MIN");
 
-            while (true)
-            {
-                // look for first empty 
-                if (oSheet.Cells[row, "A"].Value == null)
-                    break;
-                else
-                    row++;
-
-            }
-
-            if (row > 2)
-            {
-                row--;
-                currentFormula = "=MIN(D2:D" + row + ")";
-                oSheet.Cells[row + 1, "W"].Value = currentFormula;
-                oSheet.Calculate();
-
-                result = Convert.ToSingle(oSheet.Cells[row + 1, "W"].Value);
-                oSheet.Cells[row + 1, "W"].Value = "";
-            }
-
-            return result;
         }
-
         static float CalculateMaximum()
         {
-            // TODO: Implement this method
-            int row = 2;
-            string currentFormula = string.Empty;
-            float result = 0.0f;
-            oSheet = (Excel.Worksheet)workbook.ActiveSheet;
+            return ExecuteExcelFormula("MAX");
 
-            while (true)
-            {
-                // look for first empty 
-                if (oSheet.Cells[row, "A"].Value == null)
-                    break;
-                else
-                    row++;
-
-            }
-
-            if (row > 2)
-            {
-                row--;
-                currentFormula = "=MAX(D2:D" + row + ")";
-                oSheet.Cells[row + 1, "W"].Value = currentFormula;
-                oSheet.Calculate();
-
-                result = Convert.ToSingle(oSheet.Cells[row + 1, "W"].Value);
-                oSheet.Cells[row + 1, "W"].Value = "";
-            }
-
-            return result;
         }
     }
 }
